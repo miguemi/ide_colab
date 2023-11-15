@@ -1,0 +1,87 @@
+.mainWrap {
+   display: grid;
+   grid-template-columns: 210px 1fr;
+   grid-template-rows: 600px;
+
+}
+
+.aside {
+   background-color: rgb(130, 133, 120);
+   padding-left: 15px;
+   padding-right: 15px;
+   color: #f1f1f7;
+   display: flex;
+   flex-direction: column;
+   height: 100vh;
+   justify-content: flex-end;
+}
+
+.asideInner {
+   flex: 1;
+}
+
+.clientsList {
+   display: flex;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 30px;
+   justify-content: center;
+}
+
+.people{
+   color: #a6a6a6;
+   text-align: center;
+   transition: color 0.3s ease;
+}
+.people:hover {
+   color: #06c200;
+}
+
+.logo {
+   border-bottom: 1px solid #a6a6a6;
+   padding-bottom: 8px;
+   margin-top: 10px;
+}
+
+.logoImage {
+   height: 53px;
+}
+
+.copyBtn{
+   width: 100%;
+   margin-top: 10px;
+   margin-bottom: 15px;
+   padding: 10px;
+   border: 2px solid #4e4a85;
+   background-color: #4a854a;
+   color: #fff;
+   font-size: 14px;
+   cursor: pointer;
+   border-radius: 10px;
+   letter-spacing: 1px;
+   transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+.copyBtn:hover {
+   background-color: #fff;
+   color: #4e4a85;
+}
+
+.leaveBtn {
+   width: 100%;
+   margin-top: 10px;
+   margin-bottom: 15px;
+   padding: 10px;
+   border: 2px solid #854a61;
+   background-color: #af0d0d;
+   color: #fff;
+   font-size: 14px;
+   cursor: pointer;
+   border-radius: 10px;
+   letter-spacing: 1px;
+   transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+.leaveBtn:hover {
+   background-color: #fff;
+   color: #4e4a85;
+}
