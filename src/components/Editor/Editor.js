@@ -11,26 +11,19 @@ import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/addon/display/placeholder';
 import 'codemirror/addon/lint/lint.css';
 import 'codemirror/addon/selection/active-line';
-
 import ACTIONS from '../Actions';
-import './Editor.scss';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Navbar, Button } from 'react-bootstrap';
 
 const getCustomHint = (cm) => {
   const cursor = cm.getCursor();
   const token = cm.getTokenAt(cursor);
   const word = token.string;
 
-  // Obtén las palabras del contenido actual del editor
   const allWords = cm.getValue().match(/[\w\d_]+/g) || [];
 
-  // Lista de palabras reservadas
-  const customReservedWords = [
-    'num_estudainte',
-    'arrayt',
-    // Agrega más palabras reservadas aquí
-  ];
+  const customReservedWords = ['num_estudiante', 'arrayt']; // Agrega más palabras reservadas aquí
 
-  // Filtra las palabras sugeridas basándose en la palabra actual y excluyendo las reservadas
   const suggestions = allWords.filter((w) => w.startsWith(word) && !customReservedWords.includes(w));
 
   return {
@@ -45,34 +38,32 @@ const Editor = ({ socketRef, meetingId, onCodeChange }) => {
 
   useEffect(() => {
     async function init() {
-      editorRef.current = CodeMirror.fromTextArea(
-        document.getElementById('realtimeEditor'),
-        {
-          mode: 'python',
-          theme: 'material',
-          autoCloseTags: true,
-          autoCloseBrackets: true,
-          lineNumbers: true,
-          lineWrapping: true,
-          matchBrackets: true,
-          extraKeys: {
-            'Ctrl-Space': (cm) => {
-              // Utiliza la función personalizada para obtener sugerencias
-              cm.showHint({
-                hint: getCustomHint,
-                completeSingle: false,
-              });
-            },
+      editorRef.current = CodeMirror.fromTextArea(document.getElementById('realtimeEditor'), {
+        mode: 'python',
+        theme: 'material',
+        autoCloseTags: true,
+        autoCloseBrackets: true,
+        lineNumbers: true,
+        lineWrapping: true,
+        matchBrackets: true,
+        scrollbarStyle: null, // Desactivar el scrollbar
+        extraKeys: {
+          'Ctrl-Space': (cm) => {
+            cm.showHint({
+              hint: getCustomHint,
+              completeSingle: false,
+            });
           },
-          lint: true,
-          styleActiveLine: true,
-          hintOptions: {
-            completeSingle: false,
-            hint: getCustomHint, // Utiliza la función personalizada
-          },
-        }
-      );
+        },
+        lint: true,
+        styleActiveLine: true,
+        hintOptions: {
+          completeSingle: false,
+          hint: getCustomHint,
+        },
+      });
 
+      // Resto de la configuración de CodeMirror
       editorRef.current.on('change', (instance, changes) => {
         const { origin } = changes;
         const code = instance.getValue();
@@ -112,7 +103,105 @@ const Editor = ({ socketRef, meetingId, onCodeChange }) => {
     };
   }, [socketRef.current]);
 
-  return <textarea id="realtimeEditor" />;
+  const handleLoadButtonClick = async () => {
+    try {
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = '.py';
+      fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const content = await readFileAsync(file);
+          editorRef.current.setValue(content);
+          onCodeChange(content);
+          socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+            meetingId,
+            code: content,
+          });
+        }
+      });
+      fileInput.click();
+    } catch (error) {
+      console.error('Error al cargar el archivo:', error);
+    }
+  };
+
+  const handleSaveButtonClick = () => {
+    const content = editorRef.current.getValue();
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, 'codigo.py');
+  };
+
+  const handleUndoButtonClick = () => {
+    editorRef.current.undo();
+    const code = editorRef.current.getValue();
+    onCodeChange(code);
+    socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+      meetingId,
+      code,
+    });
+  };
+
+  const handleRedoButtonClick = () => {
+    editorRef.current.redo();
+    const code = editorRef.current.getValue();
+    onCodeChange(code);
+    socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+      meetingId,
+      code,
+    });
+  };
+
+  const readFileAsync = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        resolve(event.target.result);
+      };
+      reader.onerror = (error) => {
+        reject(error);
+      };
+      reader.readAsText(file);
+    });
+  };
+
+  const saveAs = (blob, fileName) => {
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  return (
+<div>
+    <Navbar bg="light" expand="lg" className="fixed-top">
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Brand>IDE collab</Navbar.Brand>
+        <div className="ml-auto">
+          <Button variant="primary" size="sm" onClick={handleLoadButtonClick}>
+            Cargar Archivo
+          </Button>{' '}
+          <Button variant="success" size="sm" onClick={handleSaveButtonClick}>
+            Guardar Archivo
+          </Button>{' '}
+          <Button variant="warning" size="sm" onClick={handleUndoButtonClick}>
+            Deshacer
+          </Button>{' '}
+          <Button variant="danger" size="sm" onClick={handleRedoButtonClick}>
+            Rehacer
+          </Button>
+        </div>
+      </Navbar.Collapse>
+    </Navbar>
+    <div className="content" style={{ marginTop: '55px' }}>
+      {/* Ajusta el valor del marginTop según la altura del Navbar */}
+      <textarea id="realtimeEditor"></textarea>
+    </div>
+  </div>
+  );
 };
 
 export default Editor;

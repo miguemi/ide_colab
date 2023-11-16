@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Client from '../Client/Client';
 import Editor from '../Editor/Editor';
 import './Ide.scss';
-import toast, { Toaster } from 'react-hot-toast'; // Importa Toaster desde react-hot-toast
+import toast, { Toaster } from 'react-hot-toast';
 import { initSocket } from '../socket';
 import ACTIONS from '../Actions';
 import {
@@ -20,6 +20,7 @@ const Ide = () => {
   const { meetingId } = useParams();
 
   const [clients, setClients] = useState([]);
+  const [confirmationVisible, setConfirmationVisible] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -80,13 +81,18 @@ const Ide = () => {
     }
   }
 
-  function leaveRoom() {
-    reactNavigator('/');
-  }
+  const showConfirmation = () => {
+    setConfirmationVisible(true);
+  };
 
-  if (!location.state) {
-    return <Navigate to="/" />;
-  }
+  const hideConfirmation = () => {
+    setConfirmationVisible(false);
+  };
+
+  const handleLeaveRoom = () => {
+    hideConfirmation();
+    reactNavigator('/');
+  };
 
   return (
     <div className="mainWrap">
@@ -105,9 +111,19 @@ const Ide = () => {
         <button className="copyBtn" onClick={copyMeetingId}>
           Copiar ID de reunión
         </button>
-        <button className="leaveBtn" onClick={leaveRoom}>
+        <button className="leaveBtn" onClick={showConfirmation}>
           Abandonar reunión
         </button>
+
+        {/* Confirmación */}
+        {confirmationVisible && (
+          <div className="confirmation">
+            <p>¿Estás seguro de abadonar la sala?</p>
+            <button onClick={handleLeaveRoom}>Sí</button>
+            <button onClick={hideConfirmation}>No</button>
+          </div>
+        )}
+
         {/* Agrega el componente Toaster para mostrar notificaciones */}
         <Toaster />
       </div>

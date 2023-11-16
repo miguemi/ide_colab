@@ -5,3 +5,9 @@
    padding-top: 7px;
   
 }
+.custom-navbar {
+   position: fixed;
+   top: 0;
+   width: 100%;
+   z-index: 1000; /* Ajusta según sea necesario para que esté por encima del contenido */
+ }

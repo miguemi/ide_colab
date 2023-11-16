@@ -1,20 +1,25 @@
 .mainWrap {
-   display: grid;
-   grid-template-columns: 210px 1fr;
-   grid-template-rows: 600px;
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  grid-template-rows: auto; /* Set to auto to adjust height automatically based on content */
+  max-height: 100vh; /* Optional: Set a maximum height to limit the height to the viewport height */
 
 }
+
 
 .aside {
    background-color: rgb(96, 94, 100);
    padding-left: 15px;
    padding-right: 15px;
    color: #f1f1f7;
-   display: flex;
+   flex: 1;
+   margin-top: 56px; /* Ajusta según la altura del Navbar */
+   margin-right: 10px;
    flex-direction: column;
-   height: 100vh;
    justify-content: flex-end;
-}
+ }
+ 
+
 
 .asideInner {
    flex: 1;
@@ -31,6 +36,7 @@
 .people{
    color: #a6a6a6;
    text-align: center;
+   font-size: 20px;
    transition: color 0.3s ease;
 }
 .people:hover {
