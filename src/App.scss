@@ -1,0 +1,24 @@
+//estilos para cliente
+/* Estilos para el contenedor principal del cliente */
+.client {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ }
+ 
+ /* Estilos para el nombre de usuario */
+ .userName {
+    margin-top: 2px;
+    font-size: 15px;
+    color: rgb(16, 17, 16);
+ }
+ 
+
+ //css para Componente EDITOR
+ .CodeMirror {
+   min-height: calc(100vh - 7px);
+   font-size: 13px;
+   line-height: 1.2;
+   padding-top: 7px;
+  
+}
