@@ -11,9 +11,12 @@ import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/addon/display/placeholder';
 import 'codemirror/addon/lint/lint.css';
 import 'codemirror/addon/selection/active-line';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload, faSave, faUndo, faRedo } from '@fortawesome/free-solid-svg-icons';
+
 import ACTIONS from '../Actions';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Navbar, Button } from 'react-bootstrap';
+import { Navbar, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const getCustomHint = (cm) => {
   const cursor = cm.getCursor();
@@ -32,6 +35,12 @@ const getCustomHint = (cm) => {
     to: { line: cursor.line, ch: token.end },
   };
 };
+
+const renderTooltip = (props, text) => (
+  <Tooltip id="button-tooltip" {...props}>
+    {text}
+  </Tooltip>
+);
 
 const Editor = ({ socketRef, meetingId, onCodeChange }) => {
   const editorRef = useRef(null);
@@ -175,32 +184,56 @@ const Editor = ({ socketRef, meetingId, onCodeChange }) => {
   };
 
   return (
-<div>
-    <Navbar bg="light" expand="lg" className="fixed-top">
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Navbar.Brand>IDE collab</Navbar.Brand>
-        <div className="ml-auto">
-          <Button variant="primary" size="sm" onClick={handleLoadButtonClick}>
-            Cargar Archivo
-          </Button>{' '}
-          <Button variant="success" size="sm" onClick={handleSaveButtonClick}>
-            Guardar Archivo
-          </Button>{' '}
-          <Button variant="warning" size="sm" onClick={handleUndoButtonClick}>
-            Deshacer
-          </Button>{' '}
-          <Button variant="danger" size="sm" onClick={handleRedoButtonClick}>
-            Rehacer
-          </Button>
-        </div>
-      </Navbar.Collapse>
-    </Navbar>
-    <div className="content" style={{ marginTop: '55px' }}>
-      {/* Ajusta el valor del marginTop según la altura del Navbar */}
-      <textarea id="realtimeEditor"></textarea>
+    <div>
+      <Navbar bg="warning" expand="lg" className="fixed-top">
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Brand>IDE collab</Navbar.Brand>
+          <div className="ml-auto">
+            <OverlayTrigger
+              placement="bottom"
+              delay={{ show: 250, hide: 400 }}
+              overlay={(props) => renderTooltip(props, 'Cargar Archivo')}
+            >
+              <Button variant="primary" size="sm" onClick={handleLoadButtonClick}>
+                <FontAwesomeIcon icon={faUpload} />
+              </Button>
+            </OverlayTrigger>{' '}
+            <OverlayTrigger
+              placement="bottom"
+              delay={{ show: 250, hide: 400 }}
+              overlay={(props) => renderTooltip(props, 'Guardar Archivo')}
+            >
+              <Button variant="success" size="sm" onClick={handleSaveButtonClick}>
+                <FontAwesomeIcon icon={faSave} />
+              </Button>
+            </OverlayTrigger>{' '}
+            <OverlayTrigger
+              placement="bottom"
+              delay={{ show: 250, hide: 400 }}
+              overlay={(props) => renderTooltip(props, 'Deshacer')}
+            >
+              <Button variant="warning" size="sm" onClick={handleUndoButtonClick}>
+                <FontAwesomeIcon icon={faUndo} />
+              </Button>
+            </OverlayTrigger>{' '}
+            <OverlayTrigger
+              placement="bottom"
+              delay={{ show: 250, hide: 400 }}
+              overlay={(props) => renderTooltip(props, 'Rehacer')}
+            >
+              <Button variant="danger" size="sm" onClick={handleRedoButtonClick}>
+                <FontAwesomeIcon icon={faRedo} />
+              </Button>
+            </OverlayTrigger>
+          </div>
+        </Navbar.Collapse>
+      </Navbar>
+      <div className="content" style={{ marginTop: '55px' }}>
+        {/* Ajusta el valor del marginTop según la altura del Navbar */}
+        <textarea id="realtimeEditor"></textarea>
+      </div>
     </div>
-  </div>
   );
 };
 

@@ -23,11 +23,11 @@
    font-size: 20px;
    margin-left: 13px;
    margin-top: 25px;
-   color: #f4f7f7;
+   color: #060b0b;
 }
 
 .formWrapper {
-   background: #ffffff;
+   background: #d0d1d3;
    padding: 20px;
    border-radius: 10px;
    width: 400px;
@@ -55,15 +55,14 @@ footer a {
    margin-top: 0; 
    text-align: center;
    font-size: 16px; 
-   color:  #0f0e0e; 
-   font-family: 'Times New Roman', Times, serif;
+   color:  #1d1da6; 
    letter-spacing: 1px;
    transition: color 0.3s ease-in-out; 
    
 }
 
 .text:hover {
-   color: #44c738; 
+   color: #178c1d; 
 }
 
 /* Estilos para el logotipo de la página principal con contorno curveado */
@@ -84,7 +83,7 @@ footer a {
    border: none;
    margin-bottom: 5px;
    background: #e3e6e7;
-   font-size: 13px;
+   font-size: 16px;
    color: #181818;
    border-radius: 5px;
 }
@@ -126,7 +125,7 @@ footer a {
 .joinBtn {
    background-color: #28a745;
    color: #fff;
-   padding: 8px 200px; 
+   padding: 8px 180px; 
    border: none;
    border-radius: 5px;
    cursor: pointer;

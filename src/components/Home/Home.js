@@ -3,6 +3,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import logoH from '../../components/logo/logoH.png';
 import './Home.scss';
 
@@ -106,18 +107,30 @@ const Home = () => {
             </span>
           </div>
         </div>
-        <footer>
-          <p>Manuel Miguel Miguel</p>
-          <a
-            href="https://github.com/miguemi"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            IDE colaborativo - 2023
-          </a>
-        </footer>
+        <section className="bg-secondary text-light fixed-bottom w-100 d-flex flex-column align-items-center justify-content-center ">
+  <div className="container">
+    <div className="row">
+      <div className="col-12 text-center">
+        <p className="m-0">Manuel Miguel Miguel</p>
+      </div>
+    </div>
+    <div className="row mt-2">
+      <div className="col-12 text-center">
+        <a
+          href="https://github.com/miguemi"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-light"
+        >
+          <i className="bi bi-github"></i> {' '} IDE colaborativo - 2023
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
       </div>
     </>
   );
 };
+
 export default Home;
