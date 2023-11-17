@@ -68,12 +68,28 @@ const Home = () => {
       <ToastContainer position="top-center" />
 
       <div className="hom">
-        <img className="homImage" src={logoH} alt="Logo" />
+      <div>
+      <img
+        className="homImage"
+        src="https://i.imgur.com/imbS8L0.png"
+        alt="Logo"
+        style={{ maxWidth: '80px', height: 'auto' }}
+      />
+      {/* Otros elementos de tu componente */}
+    </div>
         <span className="textHome">¡Bienvenido! </span>
       </div>
       <div className="homePageWrapper">
         <div className="formWrapper">
-          <img className="homePageLogo" src={logoH} alt="Logo" />
+        <div style={{ textAlign: 'center' }}>
+      <img
+        className="homImage"
+        src="https://i.imgur.com/imbS8L0.png"
+        alt="Logo"
+        style={{ maxWidth: '80px', height: 'auto', margin: 'auto' }}
+      />
+      {/* Otros elementos de tu componente */}
+    </div>
           <p className="text">Conéctate y programa con tu equipo.</p>
           <div className="inputGroup">
             <input
