@@ -117,11 +117,14 @@ const Ide = () => {
 
         {/* Confirmación */}
         {confirmationVisible && (
-          <div className="confirmation">
-            <p className='text-dark'>¿Estás seguro de abadonar la sala?</p>
-            <button onClick={handleLeaveRoom}>Sí</button>
-            <button onClick={hideConfirmation}>No</button>
-          </div>
+        <div className="confirmation">
+        <p className='text-dark'>¿Estás seguro de abandonar la sala?</p>
+        <div className="btn-group" role="group" aria-label="Botones de confirmación">
+          <button type="button" className="btn btn-primary" onClick={handleLeaveRoom}>Sí</button>
+          <div className="mx-1"></div> {/* Separación de 1 centímetro */}
+          <button type="button" className="btn btn-secondary" onClick={hideConfirmation}>No</button>
+        </div>
+      </div>
         )}
 
         {/* Agrega el componente Toaster para mostrar notificaciones */}

@@ -85,7 +85,7 @@ const Home = () => {
                 style={{ maxWidth: '80px', height: 'auto' }}
               />
             </div>
-            <span className="textHome">¡Bienvenido! </span>
+            <span className="textHome text-white">¡Bienvenido! </span>
           </div>
           <div className="homePageWrapper">
             <div className="formWrapper">

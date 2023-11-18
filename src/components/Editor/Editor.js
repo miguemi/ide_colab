@@ -47,6 +47,8 @@ const CodeSuggestionsModal = ({ show, onHide, onSelectCode }) => {
     'nombre = "Python"',
     'edad = 25',
     'altura = 1.75',
+    'edad = 25',
+    'altura = 1.75',
     'es_nuevo = True',
     'lista = [1, 2, 3, 4, 5]',
     'diccionario = {"clave": "valor", "otra_clave": "otro_valor"}',
@@ -311,10 +313,73 @@ const CodeSuggestionsModal = ({ show, onHide, onSelectCode }) => {
   );
 };
 
+const ProjectModal = ({ show, onHide, onSelectProject }) => {
+  const pythonProjects = [
+    {
+      name: 'Proyecto 1',
+      code: 'console.log("Hola, mundo!");\n// Resto del código del Proyecto 1',
+    },
+    {
+      name: 'Proyecto 2',
+      code: 'for (let i = 0; i < 5; i++) {\n    console.log(i);\n}\n// Resto del código del Proyecto 2',
+    },
+    {
+      name: 'Proyecto 3',
+      code: 'function sumar(a, b) {\n    return a + b;\n}\n// Resto del código del Proyecto 3',
+    },
+    {
+      name: 'Proyecto 4',
+      code: 'const listaNombres = ["Juan", "María", "Carlos"];\n// Resto del código del Proyecto 4',
+    },
+    {
+      name: 'Proyecto 5',
+      code: 'const persona = {\n    nombre: "John",\n    edad: 30\n};\n// Resto del código del Proyecto 5',
+    },
+    {
+      name: 'Proyecto 6',
+      code: 'const obtenerFechaActual = () => {\n    return new Date();\n}\n// Resto del código del Proyecto 6',
+    },
+    {
+      name: 'Proyecto 7',
+      code: 'class Rectangulo {\n    constructor(base, altura) {\n        this.base = base;\n        this.altura = altura;\n    }\n}\n// Resto del código del Proyecto 7',
+    },
+    {
+      name: 'Proyecto 8',
+      code: 'const duplicarNumeros = (numeros) => {\n    return numeros.map(numero => numero * 2);\n}\n// Resto del código del Proyecto 8',
+    },
+    {
+      name: 'Proyecto 9',
+      code: 'const mostrarAlerta = () => {\n    alert("¡Hola, esto es una alerta!");\n}\n// Resto del código del Proyecto 9',
+    },
+    {
+      name: 'Proyecto 10',
+      code: 'const dividir = (a, b) => {\n    if (b !== 0) {\n        return a / b;\n    } else {\n        return "No se puede dividir por cero";\n    }\n}\n// Resto del código del Proyecto 10',
+    },
+  ];
+
+  return (
+    <Modal show={show} onHide={onHide}>
+      <Modal.Header closeButton>
+        <Modal.Title>Proyectos</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <ListGroup>
+          {pythonProjects.map((project, index) => (
+            <ListGroup.Item key={index} action onClick={() => onSelectProject(project)}>
+              {project.name}
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
 const Editor = ({ socketRef, meetingId, onCodeChange }) => {
   const editorRef = useRef(null);
   const [selectedCodeSnippet, setSelectedCodeSnippet] = useState('');
   const [showCodeSuggestionsModal, setShowCodeSuggestionsModal] = useState(false);
+  const [showProjectModal, setShowProjectModal] = useState(false);
 
   useEffect(() => {
     async function init() {
@@ -418,6 +483,24 @@ const Editor = ({ socketRef, meetingId, onCodeChange }) => {
     });
   };
 
+  const handleLoadProjectButtonClick = () => {
+    setShowProjectModal(true);
+  };
+
+  const handleHideProjectModal = () => {
+    setShowProjectModal(false);
+  };
+
+  const handleSelectProject = (selectedProject) => {
+    handleHideProjectModal();
+    editorRef.current.setValue(selectedProject.code);
+    onCodeChange(selectedProject.code);
+    socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+      meetingId,
+      code: selectedProject.code,
+    });
+  };
+
   const handleLoadButtonClick = async () => {
     try {
       const fileInput = document.createElement('input');
@@ -503,80 +586,93 @@ const Editor = ({ socketRef, meetingId, onCodeChange }) => {
 
   return (
     <div>
-    <Navbar bg="info" expand="lg" className="fixed-top">
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Navbar.Brand>IDE collab</Navbar.Brand>
-        <div className="ml-auto row">
-          <div className="col-auto">
-            <OverlayTrigger
-              placement="bottom"
-              delay={{ show: 250, hide: 400 }}
-              overlay={(props) => renderTooltip(props, 'Cargar Archivo')}
-            >
-              <Button variant="primary" size="sm" onClick={handleLoadButtonClick}>
-                <FontAwesomeIcon icon={faUpload} />
-              </Button>
-            </OverlayTrigger>
+      <Navbar bg="info" expand="lg" className="fixed-top">
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Brand>IDE collab</Navbar.Brand>
+          <div className="ml-auto row">
+            <div className="col-auto">
+              <OverlayTrigger
+                placement="bottom"
+                delay={{ show: 250, hide: 400 }}
+                overlay={(props) => renderTooltip(props, 'Cargar Archivo')}
+              >
+                <Button variant="primary" size="sm" onClick={handleLoadButtonClick}>
+                  <FontAwesomeIcon icon={faUpload} />
+                </Button>
+              </OverlayTrigger>
+            </div>
+            <div className="col-auto">
+              <OverlayTrigger
+                placement="bottom"
+                delay={{ show: 250, hide: 400 }}
+                overlay={(props) => renderTooltip(props, 'Guardar Archivo')}
+              >
+                <Button variant="success" size="sm" onClick={handleSaveButtonClick}>
+                  <FontAwesomeIcon icon={faSave} />
+                </Button>
+              </OverlayTrigger>
+            </div>
+            <div className="col-auto">
+              <OverlayTrigger
+                placement="bottom"
+                delay={{ show: 250, hide: 400 }}
+                overlay={(props) => renderTooltip(props, 'Deshacer')}
+              >
+                <Button variant="warning" size="sm" onClick={handleUndoButtonClick}>
+                  <FontAwesomeIcon icon={faUndo} />
+                </Button>
+              </OverlayTrigger>
+            </div>
+            <div className="col-auto">
+              <OverlayTrigger
+                placement="bottom"
+                delay={{ show: 250, hide: 400 }}
+                overlay={(props) => renderTooltip(props, 'Rehacer')}
+              >
+                <Button variant="danger" size="sm" onClick={handleRedoButtonClick}>
+                  <FontAwesomeIcon icon={faRedo} />
+                </Button>
+              </OverlayTrigger>
+            </div>
+            <div className="col-auto">
+              <OverlayTrigger
+                placement="bottom"
+                delay={{ show: 250, hide: 400 }}
+                overlay={(props) => renderTooltip(props, 'Fragmentos de código')}
+              >
+                <Button variant="light" size="sm" onClick={handleShowCodeSuggestionsModal}>
+                  Fragmentos de código
+                </Button>
+              </OverlayTrigger>
+            </div>
+            <div className="col-auto">
+              <OverlayTrigger
+                placement="bottom"
+                delay={{ show: 250, hide: 400 }}
+                overlay={(props) => renderTooltip(props, 'Cargar Proyecto')}
+              >
+                <Button variant="secondary" size="sm" onClick={handleLoadProjectButtonClick}>
+                  Cargar Proyecto
+                </Button>
+              </OverlayTrigger>
+            </div>
+            <div className="col-auto">
+              <Dropdown>
+                <Dropdown.Toggle variant="light" size="sm">
+                  Tema
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleThemeChange('material')}>
+                    Material
+                  </Dropdown.Item>
+                  {/* Agrega más temas según tus necesidades */}
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
           </div>
-          <div className="col-auto">
-            <OverlayTrigger
-              placement="bottom"
-              delay={{ show: 250, hide: 400 }}
-              overlay={(props) => renderTooltip(props, 'Guardar Archivo')}
-            >
-              <Button variant="success" size="sm" onClick={handleSaveButtonClick}>
-                <FontAwesomeIcon icon={faSave} />
-              </Button>
-            </OverlayTrigger>
-          </div>
-          <div className="col-auto">
-            <OverlayTrigger
-              placement="bottom"
-              delay={{ show: 250, hide: 400 }}
-              overlay={(props) => renderTooltip(props, 'Deshacer')}
-            >
-              <Button variant="warning" size="sm" onClick={handleUndoButtonClick}>
-                <FontAwesomeIcon icon={faUndo} />
-              </Button>
-            </OverlayTrigger>
-          </div>
-          <div className="col-auto">
-            <OverlayTrigger
-              placement="bottom"
-              delay={{ show: 250, hide: 400 }}
-              overlay={(props) => renderTooltip(props, 'Rehacer')}
-            >
-              <Button variant="danger" size="sm" onClick={handleRedoButtonClick}>
-                <FontAwesomeIcon icon={faRedo} />
-              </Button>
-            </OverlayTrigger>
-          </div>
-          <div className="col-auto">
-            <OverlayTrigger
-              placement="bottom"
-              delay={{ show: 250, hide: 400 }}
-              overlay={(props) => renderTooltip(props, 'Fragmentos de código')}
-            >
-              <Button variant="light" size="sm" onClick={handleShowCodeSuggestionsModal}>
-                Fragmentos de código
-              </Button>
-            </OverlayTrigger>
-          </div>
-          <div className="col-auto">
-            <Dropdown>
-              <Dropdown.Toggle variant="light" size="sm">
-                Tema
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => handleThemeChange('material')}>Material</Dropdown.Item>
-                {/* Agrega más temas según tus necesidades */}
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-        </div>
-      </Navbar.Collapse>
-    </Navbar>
+        </Navbar.Collapse>
+      </Navbar>
       <div className="content" style={{ marginTop: '55px' }}>
         <textarea id="realtimeEditor"></textarea>
       </div>
@@ -585,6 +681,12 @@ const Editor = ({ socketRef, meetingId, onCodeChange }) => {
         show={showCodeSuggestionsModal}
         onHide={handleHideCodeSuggestionsModal}
         onSelectCode={handleSelectCode}
+      />
+
+      <ProjectModal
+        show={showProjectModal}
+        onHide={handleHideProjectModal}
+        onSelectProject={handleSelectProject}
       />
     </div>
   );
