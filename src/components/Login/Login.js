@@ -8,7 +8,7 @@ const Login = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!username.trim() || !password.trim()) {
@@ -16,49 +16,37 @@ const Login = ({ onLogin }) => {
       return;
     }
 
-    // Verifica las credenciales
-    if (username === 'migue' && password === 'miguel') {
-      setError('');
-      onLogin(username);
+    try {
+      const response = await fetch('http://localhost:5001/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-      // Redirige a la página Home después del inicio de sesión exitoso
-      navigate('/home');
-    } else {
-      setError('Credenciales incorrectas. Por favor, verifica tu nombre de usuario y contraseña.');
+      const data = await response.json();
+      console.log(data);
+
+      if (response.ok) {
+        setError('');
+        onLogin(username);
+        navigate('/home');
+      } else {
+        setError(data.message || 'Error al iniciar sesión');
+      }
+    } catch (error) {
+      console.error('Error al enviar la solicitud al servidor:', error);
+      setError('Error de conexión');
     }
   };
 
   return (
-    <div className="container-fluid vh-100 d-flex flex-column" style={{ backgroundImage: 'url("tu-imagen-de-fondo.jpg")', backgroundSize: 'cover' }}>
-      {/* Navbar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container">
-        <a className="navbar-brand" href="/">
-        <img
-          src="https://i.imgur.com/imbS8L0.png"
-          alt="Tu Logo"
-          style={{ maxWidth: '60px', height: 'auto' }}
-        />
-      </a>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <a className="nav-link" href="/">Inicio</a>
-              </li>
-              {/* Agrega más elementos de menú según tus necesidades */}
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      {/* Contenido del centro */}
+    <div className="container-fluid vh-100 d-flex flex-column">
       <div className="flex-grow-1 d-flex justify-content-center align-items-center">
         <div className="card">
           <div className="card-body">
-            <h2 className="text-center mb-4">Iniciar Sesión</h2>
+            <h4 className="text-center mb-4">Iniciar Sesión</h4>
             <form onSubmit={handleLogin}>
               <div className="mb-3">
                 <input
@@ -92,24 +80,6 @@ const Login = ({ onLogin }) => {
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-secondary text-center py-3 fixed-bottom w-100">
-        <div className="container">
-          <div className="row">
-            <div className="col-12 text-center">
-              <a
-                href="https://github.com/miguemi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-dark"
-              >
-                <i className="bi bi-github"></i> {' '} IDE colaborativo - 2023
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
