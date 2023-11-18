@@ -94,7 +94,7 @@ const Login = ({ onLogin }) => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-light text-center py-3 fixed-bottom w-100">
+      <footer className="bg-secondary text-center py-3 fixed-bottom w-100">
         <div className="container">
           <div className="row">
             <div className="col-12 text-center">
@@ -110,11 +110,6 @@ const Login = ({ onLogin }) => {
           </div>
         </div>
       </footer>
-
-      {/* Modal de Registro */}
-      <div className="modal fade" id="registroModal" tabIndex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
-        {/* ... Contenido del modal ... */}
-      </div>
     </div>
   );
 };

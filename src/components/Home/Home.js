@@ -4,7 +4,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import logoH from '../../components/logo/logoH.png';
 import './Home.scss';
 
 // Importa los estilos específicos de react-toastify para la posición

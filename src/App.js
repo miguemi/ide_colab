@@ -8,13 +8,13 @@ import './App.scss';
 
 function App() {
   const handleLogin = (username) => {
-    // Lógica para el inicio de sesión, por ejemplo, guardar el usuario en el estado global.
     console.log('Usuario logueado:', username);
   };
+
   return (
     <>
       <div className="toast">
-        <Toaster pposition="top-center"
+        <Toaster position="top-center"
           toastOptions={{
             success: {
               style: {

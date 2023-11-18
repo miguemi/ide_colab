@@ -118,7 +118,7 @@ const Ide = () => {
         {/* Confirmación */}
         {confirmationVisible && (
           <div className="confirmation">
-            <p>¿Estás seguro de abadonar la sala?</p>
+            <p className='text-dark'>¿Estás seguro de abadonar la sala?</p>
             <button onClick={handleLeaveRoom}>Sí</button>
             <button onClick={hideConfirmation}>No</button>
           </div>

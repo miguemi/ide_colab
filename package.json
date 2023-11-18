@@ -17,6 +17,7 @@
     "python-shell": "^5.0.0",
     "randomcolor": "^0.6.2",
     "react": "^18.2.0",
+    "react-autosuggest": "^10.1.0",
     "react-avatar": "^5.0.1",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
