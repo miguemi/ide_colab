@@ -586,7 +586,7 @@ const Editor = ({ socketRef, meetingId, onCodeChange }) => {
 
   return (
     <div>
-      <Navbar bg="info" expand="lg" className="fixed-top">
+      <Navbar bg="warning" expand="lg" className="fixed-top">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Navbar.Brand>IDE collab</Navbar.Brand>
